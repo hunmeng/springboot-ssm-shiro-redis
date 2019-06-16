@@ -1,0 +1,43 @@
+#端口及项目名配置
+server:
+  port: 8080
+  servlet:
+    context-path: /
+#spring配置
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: utf-8
+    cache: false
+  #数据库配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/myitem?useUnicode=true&characterEncoding=UTF-8&useSSL=false&jdbcCompliantTruncation=false&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: 123
+  resources:
+    chain:
+      strategy:
+        content:
+          enabled: true
+          paths: /**
+
+#日志地址
+#logging.config=classpath:log4j2.xml
+logging:
+  file: logs/config/demo-test.log
+  level:
+    com.hunmengwl.projectlove.mapper: debug
+
+#mybatis
+mybatis:
+  mapper-locations: classpath:/mybatis/mapper/*.xml
+  type-aliases-package: com.hunmengwl.projectlove.model
+  #开启mybatis二级缓存
+  configuration:
+    cache-enabled: true
+debug: true
+
+
+

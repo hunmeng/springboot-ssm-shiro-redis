@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hunmengwl.projectlove.mapper.UserMapper" >
+
+  <!--开启缓存-->
+  <cache type="com.hunmengwl.projectlove.redis.RedisCache"/>
+
+  <resultMap id="listUser" type="com.hunmengwl.projectlove.model.User" >
+      <id column="user_id" property="userId" javaType="java.lang.Integer" />
+      <result column="user_account" property="userAccount" javaType="java.lang.String" />
+      <result column="user_password" property="userPassword" javaType="java.lang.String" />
+      <result column="user_salt" property="userSalt" javaType="java.lang.String" />
+      <result column="user_image" property="userImage" javaType="java.lang.String" />
+      <result column="user_sex" property="userSex" javaType="java.lang.String" />
+      <result column="user_phone" property="userPhone" javaType="java.lang.String" />
+      <result column="user_createTime" property="userCreatetime" javaType="java.util.Date" />
+      <result column="user_status" property="userStatus" javaType="java.lang.Integer" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap" type="com.hunmengwl.projectlove.model.User" >
+    <constructor >
+      <idArg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_account" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_salt" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_image" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_sex" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_birthday" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_createTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="user_status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, user_account, user_password, user_salt, user_image, user_sex, user_phone,
+    user_createTime, user_status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_list
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUsername" resultMap="listUser" parameterType="java.lang.String">
+    select *
+    from tb_user_list
+    where user_account = #{username,jdbcType=VARCHAR}
+  </select>
+  <select id="listPermissionsByUserName" resultType="string" parameterType="com.hunmengwl.projectlove.model.User">
+    select distinct p.permission
+    from tb_user_list u inner join t_sys_user_role ur on u.user_id = ur.user_id inner join t_sys_role r on ur.role_id = r.role_id
+    inner join t_sys_role_permission rp on r.role_id = rp.role_id inner join t_sys_permission p on rp.permission_id = p.permission_id
+    where r.available = 1 and p.available = 1
+    <if test="userAccount != null" >
+      and u.user_account = #{userAccount,jdbcType=VARCHAR}
+    </if>
+    <if test="userPhone != null" >
+      and u.user_phone = #{userPhone,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="listRolesByUserName" resultType="string" parameterType="com.hunmengwl.projectlove.model.User">
+    select distinct r.role_name
+    from tb_user_list u inner join t_sys_user_role ur on u.user_id = ur.user_id inner join t_sys_role r on ur.role_id = r.role_id
+    where r.available = 1
+    <if test="userAccount != null" >
+      and u.user_account = #{userAccount,jdbcType=VARCHAR}
+    </if>
+    <if test="userPhone != null" >
+      and u.user_phone = #{userPhone,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="loadByUser" resultMap="listUser" parameterType="user">
+    select * from tb_user_list  where 1=1
+    <if test="userAccount != null" >
+     AND user_account = #{userAccount,jdbcType=VARCHAR}
+    </if>
+    <if test="userPassword != null" >
+      AND  user_password = #{userPassword,jdbcType=VARCHAR}
+    </if>
+    <if test="userSalt != null" >
+      AND  user_salt = #{userSalt,jdbcType=VARCHAR}
+    </if>
+    <if test="userImage != null" >
+      AND user_image = #{userImage,jdbcType=VARCHAR}
+    </if>
+    <if test="userSex != null" >
+      AND user_sex = #{userSex,jdbcType=VARCHAR}
+    </if>
+    <if test="userPhone != null" >
+      AND user_phone = #{userPhone,jdbcType=VARCHAR}
+    </if>
+    <if test="userCreatetime != null" >
+      AND user_createTime = #{userCreatetime,jdbcType=VARCHAR}
+    </if>
+    <if test="userStatus != null" >
+      AND user_status = #{userStatus,jdbcType=INTEGER}
+    </if>
+
+  </select>
+  <select id="listUser" resultMap="listUser" parameterType="user">
+    SELECT * FROM tb_user_list WHERE 1=1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_user_list
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hunmengwl.projectlove.model.User" >
+    insert into tb_user_list (user_id, user_account, user_password, 
+      user_salt, user_image, user_sex, 
+      user_phone, user_createTime, user_status
+      )
+    values (#{userId,jdbcType=INTEGER}, #{userAccount,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
+      #{userSalt,jdbcType=VARCHAR}, #{userImage,jdbcType=VARCHAR}, #{userSex,jdbcType=VARCHAR}, 
+      #{userPhone,jdbcType=VARCHAR}, #{userCreatetime,jdbcType=VARCHAR}, #{userStatus,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hunmengwl.projectlove.model.User" >
+    insert into tb_user_list
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userAccount != null" >
+        user_account,
+      </if>
+      <if test="userPassword != null" >
+        user_password,
+      </if>
+      <if test="userSalt != null" >
+        user_salt,
+      </if>
+      <if test="userImage != null" >
+        user_image,
+      </if>
+      <if test="userSex != null" >
+        user_sex,
+      </if>
+      <if test="userPhone != null" >
+        user_phone,
+      </if>
+      <if test="userCreatetime != null" >
+        user_createTime,
+      </if>
+      <if test="userStatus != null" >
+        user_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userAccount != null" >
+        #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userSalt != null" >
+        #{userSalt,jdbcType=VARCHAR},
+      </if>
+      <if test="userImage != null" >
+        #{userImage,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        #{userSex,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreatetime != null" >
+        #{userCreatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null" >
+        #{userStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hunmengwl.projectlove.model.User" >
+    update tb_user_list
+    <set >
+      <if test="userAccount != null" >
+        user_account = #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        user_password = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userSalt != null" >
+        user_salt = #{userSalt,jdbcType=VARCHAR},
+      </if>
+      <if test="userImage != null" >
+        user_image = #{userImage,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        user_sex = #{userSex,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null" >
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreatetime != null" >
+        user_createTime = #{userCreatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null" >
+        user_status = #{userStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hunmengwl.projectlove.model.User" >
+    update tb_user_list
+    set user_account = #{userAccount,jdbcType=VARCHAR},
+      user_password = #{userPassword,jdbcType=VARCHAR},
+      user_salt = #{userSalt,jdbcType=VARCHAR},
+      user_image = #{userImage,jdbcType=VARCHAR},
+      user_sex = #{userSex,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      user_createTime = #{userCreatetime,jdbcType=VARCHAR},
+      user_status = #{userStatus,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

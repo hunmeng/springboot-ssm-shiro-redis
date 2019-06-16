@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hunmengwl.projectlove.mapper.InformationMapper" >
+  <resultMap id="BaseResultMap" type="com.hunmengwl.projectlove.model.Information" >
+    <constructor >
+      <idArg column="information_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="information_number" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="information_object" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="information_content" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="information_me" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="information_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="information_praise" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="information_look" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="information_forward" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="information_show" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="information_remark" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="dict_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    information_id, information_number, information_object, information_content, information_me, 
+    information_time, information_praise, information_look, information_forward, information_show, 
+    information_remark, dict_type, user_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_information_list
+    where information_id = #{informationId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_information_list
+    where information_id = #{informationId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hunmengwl.projectlove.model.Information" >
+    insert into tb_information_list (information_id, information_number, 
+      information_object, information_content, 
+      information_me, information_time, information_praise, 
+      information_look, information_forward, information_show, 
+      information_remark, dict_type, user_id
+      )
+    values (#{informationId,jdbcType=INTEGER}, #{informationNumber,jdbcType=VARCHAR}, 
+      #{informationObject,jdbcType=VARCHAR}, #{informationContent,jdbcType=VARCHAR}, 
+      #{informationMe,jdbcType=VARCHAR}, #{informationTime,jdbcType=TIMESTAMP}, #{informationPraise,jdbcType=INTEGER}, 
+      #{informationLook,jdbcType=INTEGER}, #{informationForward,jdbcType=INTEGER}, #{informationShow,jdbcType=INTEGER}, 
+      #{informationRemark,jdbcType=VARCHAR}, #{dictType,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hunmengwl.projectlove.model.Information" >
+    insert into tb_information_list
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="informationId != null" >
+        information_id,
+      </if>
+      <if test="informationNumber != null" >
+        information_number,
+      </if>
+      <if test="informationObject != null" >
+        information_object,
+      </if>
+      <if test="informationContent != null" >
+        information_content,
+      </if>
+      <if test="informationMe != null" >
+        information_me,
+      </if>
+      <if test="informationTime != null" >
+        information_time,
+      </if>
+      <if test="informationPraise != null" >
+        information_praise,
+      </if>
+      <if test="informationLook != null" >
+        information_look,
+      </if>
+      <if test="informationForward != null" >
+        information_forward,
+      </if>
+      <if test="informationShow != null" >
+        information_show,
+      </if>
+      <if test="informationRemark != null" >
+        information_remark,
+      </if>
+      <if test="dictType != null" >
+        dict_type,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="informationId != null" >
+        #{informationId,jdbcType=INTEGER},
+      </if>
+      <if test="informationNumber != null" >
+        #{informationNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="informationObject != null" >
+        #{informationObject,jdbcType=VARCHAR},
+      </if>
+      <if test="informationContent != null" >
+        #{informationContent,jdbcType=VARCHAR},
+      </if>
+      <if test="informationMe != null" >
+        #{informationMe,jdbcType=VARCHAR},
+      </if>
+      <if test="informationTime != null" >
+        #{informationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="informationPraise != null" >
+        #{informationPraise,jdbcType=INTEGER},
+      </if>
+      <if test="informationLook != null" >
+        #{informationLook,jdbcType=INTEGER},
+      </if>
+      <if test="informationForward != null" >
+        #{informationForward,jdbcType=INTEGER},
+      </if>
+      <if test="informationShow != null" >
+        #{informationShow,jdbcType=INTEGER},
+      </if>
+      <if test="informationRemark != null" >
+        #{informationRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="dictType != null" >
+        #{dictType,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hunmengwl.projectlove.model.Information" >
+    update tb_information_list
+    <set >
+      <if test="informationNumber != null" >
+        information_number = #{informationNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="informationObject != null" >
+        information_object = #{informationObject,jdbcType=VARCHAR},
+      </if>
+      <if test="informationContent != null" >
+        information_content = #{informationContent,jdbcType=VARCHAR},
+      </if>
+      <if test="informationMe != null" >
+        information_me = #{informationMe,jdbcType=VARCHAR},
+      </if>
+      <if test="informationTime != null" >
+        information_time = #{informationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="informationPraise != null" >
+        information_praise = #{informationPraise,jdbcType=INTEGER},
+      </if>
+      <if test="informationLook != null" >
+        information_look = #{informationLook,jdbcType=INTEGER},
+      </if>
+      <if test="informationForward != null" >
+        information_forward = #{informationForward,jdbcType=INTEGER},
+      </if>
+      <if test="informationShow != null" >
+        information_show = #{informationShow,jdbcType=INTEGER},
+      </if>
+      <if test="informationRemark != null" >
+        information_remark = #{informationRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="dictType != null" >
+        dict_type = #{dictType,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where information_id = #{informationId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hunmengwl.projectlove.model.Information" >
+    update tb_information_list
+    set information_number = #{informationNumber,jdbcType=VARCHAR},
+      information_object = #{informationObject,jdbcType=VARCHAR},
+      information_content = #{informationContent,jdbcType=VARCHAR},
+      information_me = #{informationMe,jdbcType=VARCHAR},
+      information_time = #{informationTime,jdbcType=TIMESTAMP},
+      information_praise = #{informationPraise,jdbcType=INTEGER},
+      information_look = #{informationLook,jdbcType=INTEGER},
+      information_forward = #{informationForward,jdbcType=INTEGER},
+      information_show = #{informationShow,jdbcType=INTEGER},
+      information_remark = #{informationRemark,jdbcType=VARCHAR},
+      dict_type = #{dictType,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER}
+    where information_id = #{informationId,jdbcType=INTEGER}
+  </update>
+</mapper>
